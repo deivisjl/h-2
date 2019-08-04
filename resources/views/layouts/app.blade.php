@@ -46,20 +46,21 @@
                     <ul class="nav navbar-nav">
                         <!-- <li><a href="#">Link</a></li> -->
                         <li class="dropdown">
-                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrar <span class="caret"></span></a>
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ADMINISTRAR <span class="caret"></span></a>
                           <ul class="dropdown-menu">
                             <li><a href="{{ route('paises.index') }}">Paises</a></li>                            
                             <li class="divider"></li>
                             <li><a href="{{ route('categorias.index') }}">Categorías</a></li>
-                            <li><a href="{{ route('productos.index') }}">Productos</a></li>
                             <li class="divider"></li>
                             <li><a href="{{ route('tipo-asociado.index') }}">Tipo asociado</a></li>
                           </ul>
                         </li>
-                         <li><a href="{{ route('asociados.index') }}">Asociados</a></li>
-                         <li><a href="{{ route('pedidos.index') }}">Pedidos</a></li>
+                         <li><a href="{{ route('productos.index') }}">PRODUCTOS</a></li>   
+                         <li><a href="{{ route('asociados.index') }}">ASOCIADOS</a></li>
+                         <li><a href="{{ route('pedidos.index') }}">PEDIDOS</a></li>
                          @if(Auth::user()->esAdministrador())
-                            <li><a href="{{ route('comisiones.index') }}">Comisiones</a></li>
+                            <li><a href="{{ route('comisiones.index') }}">COMISIONES</a></li>
+                            <li><a href="#">REPORTES</a></li>
                          @endif
                     </ul>
 
@@ -84,7 +85,7 @@
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            Cerrar sesión
+                                            CERRAR SESIÓN
                                         </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
