@@ -18,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/dataTables.bootstrap.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/toastr.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"> -->
 </head>
 <body>
 <div id="loading"></div>
@@ -49,9 +50,7 @@
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ADMINISTRAR <span class="caret"></span></a>
                           <ul class="dropdown-menu">
                             <li><a href="{{ route('paises.index') }}">Paises</a></li>                            
-                            <li class="divider"></li>
                             <li><a href="{{ route('categorias.index') }}">Categorías</a></li>
-                            <li class="divider"></li>
                             <li><a href="{{ route('tipo-asociado.index') }}">Tipo asociado</a></li>
                           </ul>
                         </li>

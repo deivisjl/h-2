@@ -12,9 +12,13 @@ class User extends Authenticatable
 
     use SoftDeletes;
 
-    const USUARIO_ADMINISTRADOR = 'ADMIN';
+    const USUARIO_ADMINISTRADOR = 'ADMINISTRADOR';
 
     const USUARIO_DIGITADOR = 'DIGITADOR';
+
+    const USUARIO_VENDEDOR = 'VENDEDOR';
+
+    const USUARIO_ASOCIADO = 'ASOCIADO';
 
     const USUARIO_VERIFICADO = '1';
 
@@ -52,6 +56,24 @@ class User extends Authenticatable
     public function esAdministrador(){
 
         return strtoupper($this->rol->nombre) == User::USUARIO_ADMINISTRADOR;
+        
+    }
+
+    public function esDigitador(){
+
+        return strtoupper($this->rol->nombre) == User::USUARIO_DIGITADOR;
+        
+    }
+
+    public function esVendedor(){
+
+        return strtoupper($this->rol->nombre) == User::USUARIO_VENDEDOR;
+        
+    }
+
+    public function esAsociado(){
+
+        return strtoupper($this->rol->nombre) == User::USUARIO_ASOCIADO;
         
     }
 

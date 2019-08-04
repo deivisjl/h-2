@@ -3,17 +3,15 @@
 @section('content')
 <div class="row">
 	<div class="col-md-8 col-md-offset-2">
-		<div class="panel panel-herbalife">
+		<section class="content-header">
+		   <h3>Asociados <small>Editar asociado</small></h3>
+		   <ol class="breadcrumb" style="margin-top:15px">
+			  <li><a href="{{ route('asociados.index') }}">Asociados</a></li>
+			  <li class="active">Nuevo registro</li>
+			</ol>
+		</section>
+		<div class="panel panel-default">
 			<div class="panel-body">
-				 <div class="row">
-				 	<div class="col-md-12">
-				 		<ol class="breadcrumb">
-						  <li><a href="{{ route('asociados.index') }}">Asociados</a></li>
-						  <li class="active">Editar asociado</li>
-						</ol>				 		
-				 	</div>
-				 <div class="col-md-12 text-center"><h4>Editar asociado</h4></div>
-				 </div>
 				 <form method="POST" id="form_registro" action="{{ url('asociados', [$asociado->id]) }}" autocomplete="off">
           <input name="_method" type="hidden" value="PUT">
           {{ csrf_field() }}

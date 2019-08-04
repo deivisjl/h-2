@@ -3,11 +3,11 @@
 @section('content')
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
-       <div class="panel panel-herbalife">
+    <section class="content-header">
+       <h3>Comisiones <small>Comisiones por procesar</small></h3>
+    </section>
+       <div class="panel panel-default">
           <div class="panel-body">
-              <div class="row">
-                  <div class="col-md-6"><h4>Comisiones</h4></div><!-- </div> -->
-              </div>
               <div class="row">
                   <div class="col-md-12">
                       <table id="listar" class="table table-striped table-bordered table-hover">

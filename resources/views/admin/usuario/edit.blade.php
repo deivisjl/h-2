@@ -2,8 +2,15 @@
 
 @section('content')
 <div class="row">
-	<div class="col-md-4 col-md-offset-4">
-		<div class="panel panel-herbalife">
+	<div class="col-md-6 col-md-offset-3">
+		<section class="content-header">
+		   <h3>Usuarios <small>Editar usuario</small></h3>
+		   <ol class="breadcrumb" style="margin-top:15px">
+			  <li><a href="{{ route('usuarios.index') }}">Usuarios</a></li>
+			  <li class="active">Editar registro</li>
+			</ol>
+		</section>
+		<div class="panel panel-default">
 			<div class="panel-body">
 				 <div class="row">
 				 	<div class="col-md-12">

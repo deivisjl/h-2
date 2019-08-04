@@ -3,17 +3,15 @@
 @section('content')
 <div class="row">
 	<div class="col-md-6 col-md-offset-3">
-		<div class="panel panel-herbalife">
+		<section class="content-header">
+		   <h3>Productos <small>Nuevo producto</small></h3>
+		   <ol class="breadcrumb" style="margin-top:15px">
+			  <li><a href="{{ route('productos.index') }}">Productos</a></li>
+			  <li class="active">Nuevo registro</li>
+			</ol>
+		</section>
+		<div class="panel panel-default">
 			<div class="panel-body">
-				 <div class="row">
-				 	<div class="col-md-12">
-				 		<ol class="breadcrumb">
-						  <li><a href="{{ route('productos.index') }}">Productos</a></li>
-						  <li class="active">Nuevo registro</li>
-						</ol>				 		
-				 	</div>
-				 	<div class="col-md-12 text-center"><h4>Nuevo producto</h4></div>
-				 </div>
 				 <div class="row">
 				 	<div class="col-md-12">
 				 		<form method="POST" action="{{ route('productos.store') }}" id="form_registro" accept-charset="UTF-8" enctype="multipart/form-data">

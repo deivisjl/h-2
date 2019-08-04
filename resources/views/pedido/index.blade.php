@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="panel panel-herbalife">
+<section class="content-header">
+   <h3>Pedidos <small>Listado de pedidos</small></h3>
+   <ol class="breadcrumb">
+      <a href="{{ route('pedidos.create') }}" class="btn btn-primary pull-right">Nuevo registro</a>
+   </ol>
+</section>
+<div class="panel panel-default">
     <div class="panel-body">
-        <div class="row">
-            <div class="col-md-6"><h4>Pedidos</h4></div>
-            <div class="col-md-6"><a href="{{ route('pedidos.create') }}" class="btn btn-primary pull-right">Nuevo</a></div>
-        </div>
         <div class="row">
             <div class="col-md-12">
                 <table id="listar" class="table table-striped table-bordered table-hover">
