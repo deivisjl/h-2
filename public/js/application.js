@@ -12,10 +12,10 @@ var idioma_spanish = {
       "sInfoThousands":  ",",
       "sLoadingRecords": "Cargando...",
       "oPaginate": {
-          "sFirst":    "<i class='fa fa-angle-double-left'></i>",
-          "sLast":     "<i class='fa fa-angle-double-right'></i>",
-          "sNext":     "<i class='fa fa-angle-right'></i>",
-          "sPrevious": "<i class='fa fa-angle-left'></i>"
+          "sFirst":    "<i class='glyphicon glyphicon-fast-backward'></i>",
+          "sLast":     "<i class='glyphicon glyphicon-fast-forward'></i>",
+          "sNext":     "<i class='glyphicon glyphicon-chevron-right'></i>",
+          "sPrevious": "<i class='glyphicon glyphicon-chevron-left'></i>"
       },
       "oAria": {
           "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",

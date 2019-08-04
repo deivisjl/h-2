@@ -115,9 +115,6 @@
 	    //bootstrap WYSIHTML5 - text editor
 	    $('.textarea').wysihtml5()
 	  })
-	  $('#form_registro').on('submit',function(){
-		    $('#guardar').text('Editando...');
-		});
 </script>
 
 @endsection

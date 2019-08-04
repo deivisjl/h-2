@@ -46,6 +46,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         <!-- <li><a href="#">Link</a></li> -->
+                        @if(Auth::user()->esAdministrador() || Auth::user()->esDigitador())
                         <li class="dropdown">
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ADMINISTRAR <span class="caret"></span></a>
                           <ul class="dropdown-menu">
@@ -54,9 +55,13 @@
                             <li><a href="{{ route('tipo-asociado.index') }}">Tipo asociado</a></li>
                           </ul>
                         </li>
-                         <li><a href="{{ route('productos.index') }}">PRODUCTOS</a></li>   
-                         <li><a href="{{ route('asociados.index') }}">ASOCIADOS</a></li>
+                        <li><a href="{{ route('productos.index') }}">PRODUCTOS</a></li>   
+                        <li><a href="{{ route('asociados.index') }}">ASOCIADOS</a></li>
+                        @endif
+                        @if(Auth::user()->esAdministrador() || Auth::user()->esVendedor())
                          <li><a href="{{ route('pedidos.index') }}">PEDIDOS</a></li>
+                        @endif
+
                          @if(Auth::user()->esAdministrador())
                             <li><a href="{{ route('comisiones.index') }}">COMISIONES</a></li>
                             <li><a href="#">REPORTES</a></li>

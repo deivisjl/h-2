@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class Digitador
 {
@@ -15,7 +16,7 @@ class Digitador
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->esDigitador())
+        if(Auth::user()->esDigitador() || Auth::user()->esAdministrador() )
         {
             return $next($request);    
         }

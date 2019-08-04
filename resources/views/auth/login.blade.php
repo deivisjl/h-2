@@ -59,8 +59,4 @@
 
  });
 
-$('#form_login').on('submit',function(){
-    $('#entrar').text('Ingresando...');
-});
-</script>
 @endsection

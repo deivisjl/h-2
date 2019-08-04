@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class Vendedor
 {
@@ -15,7 +16,7 @@ class Vendedor
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->esVendedor())
+        if(Auth::user()->esVendedor() || Auth::user()->esAdministrador())
         {
             return $next($request);    
         }

@@ -334,8 +334,4 @@
         });
     }
 
-$('#form_registro').on('submit',function(){
-    $('#guardar').text('Guardando...');
-});
-</script>
 @endsection

@@ -37,10 +37,3 @@
 	</div>
 </div>
 @endsection
-@section('js')
-<script type="text/javascript">
-$('#form_registro').on('submit',function(){
-    $('#editar').text('Editando...');
-});
-</script>
-@endsection

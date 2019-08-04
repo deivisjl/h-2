@@ -85,10 +85,3 @@
 	</div>
 </div>
 @endsection
-@section('js')
-<script type="text/javascript">
-$('#form_registro').on('submit',function(){
-    $('#guardar').text('Guardando...');
-});
-</script>
-@endsection
