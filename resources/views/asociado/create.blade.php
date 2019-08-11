@@ -52,32 +52,47 @@
                                     </span>
                                 @endif
 					 		</div>
-					 		<div class="form-group {{ $errors->has('correo_electronico') ? ' has-error' : '' }}">
+					 		<div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">
 					 			<label class="control-label">Correo electrónico</label>
-					 			<input type="email" name="correo_electronico" class="form-control" value="{{ old('correo_electronico') }}">
-					 			@if ($errors->has('correo_electronico'))
+					 			<input type="email" name="email" class="form-control" value="{{ old('email') }}">
+					 			@if ($errors->has('email'))
                                     <span class="help-block">
-                                        {{ $errors->first('correo_electronico') }}
+                                        {{ $errors->first('email') }}
                                     </span>
                                 @endif
 				 			</div>
-				 			<div class="form-group {{ $errors->has('tipo_asociado') ? ' has-error' : '' }}">
-					 			<label class="control-label">Tipo asociado</label>
-					 			<select class="form-control" name="tipo_asociado">
-					 				<option value="0">-- Seleccione una opción --</option>
-					 				@foreach($tipos as $tipo)
-					 				<option value="{{ $tipo->id }}">{{ $tipo->nombre }}</option>
-					 				@endforeach
-					 			</select>
-					 			@if ($errors->has('tipo_asociado'))
-	                                <span class="help-block">
-	                                    {{ $errors->first('tipo_asociado') }}
-	                                </span>
-	                            @endif
-					 		</div>
+				 			<div class="form-group {{ $errors->has('genero') ? ' has-error' : '' }}">
+								<label class="control-label">Género</label>
+								<div class="clearfix"></div>
+								<label class="radio-inline">
+								  <input type="radio" name="genero" id="inlineRadio1" value="1" checked> Masculino
+								</label>
+								<label class="radio-inline">
+								  <input type="radio" name="genero" id="inlineRadio2" value="2"> Femenino
+								</label>
+								@if ($errors->has('genero'))
+                                    <span class="help-block">
+                                        {{ $errors->first('genero') }}
+                                    </span>
+                                @endif
+							</div>
 				 		
 				 	</div>
 				 	<div class="col-md-6">
+				 		<div class="form-group {{ $errors->has('tipo_asociado') ? ' has-error' : '' }}">
+				 			<label class="control-label">Tipo asociado</label>
+				 			<select class="form-control" name="tipo_asociado">
+				 				<option value="0">-- Seleccione una opción --</option>
+				 				@foreach($tipos as $tipo)
+				 				<option value="{{ $tipo->id }}">{{ $tipo->nombre }}</option>
+				 				@endforeach
+				 			</select>
+				 			@if ($errors->has('tipo_asociado'))
+                                <span class="help-block">
+                                    {{ $errors->first('tipo_asociado') }}
+                                </span>
+                            @endif
+				 		</div>
 				 		<div class="form-group {{ $errors->has('pais') ? ' has-error' : '' }}">
 				 			<label class="control-label">País</label>
 				 			<select class="form-control" name="pais" id="pais">
@@ -92,28 +107,8 @@
                                 </span>
                             @endif
 				 		</div>
-				 		<div class="form-group {{ $errors->has('departamento') ? ' has-error' : '' }}">
-				 			<label class="control-label">Departamento</label>
-				 			<select class="form-control" name="departamento" id="departamento">
-				 				<option value="0">-- Seleccione una opción --</option>
-				 			</select>
-				 			@if ($errors->has('departamento'))
-                                <span class="help-block">
-                                    {{ $errors->first('departamento') }}
-                                </span>
-                            @endif
-				 		</div>
-				 		<div class="form-group {{ $errors->has('municipio') ? ' has-error' : '' }}">
-				 			<label class="control-label">Municipio</label>
-				 			<select class="form-control" name="municipio" id="municipio">
-				 				<option value="0">-- Seleccione una opción --</option>
-				 			</select>
-				 			@if ($errors->has('municipio'))
-                                <span class="help-block">
-                                    {{ $errors->first('municipio') }}
-                                </span>
-                            @endif
-				 		</div>
+				 		
+				 		
 				 		<div class="form-group {{ $errors->has('direccion') ? ' has-error' : '' }}">
 				 			<label class="control-label">Dirección</label>
 				 			<textarea name="direccion" class="form-control">{{ old('direccion') }}</textarea>
@@ -167,28 +162,6 @@
     listar();
  });
 
- $("#pais").on("change",function(e){
- 	e.preventDefault();
-
- 	var id = $("#pais").val();
-
- 	 if(id > 0)
- 	 {
- 	 	obtener_departamentos(id);
- 	 }
- });
-
- $("#departamento").on("change",function(e){
- 	e.preventDefault();
-
- 	var id = $("#departamento").val();
-
- 	 if(id > 0)
- 	 {
- 	 	obtener_municipios(id);
- 	 }
- });
-
  var  listar = function(){
         var table = $("#listar").DataTable({
             "processing": true,
@@ -230,108 +203,6 @@
 
       });
     }	
-
-    var obtener_departamentos = function(id){
-      loading = document.getElementById('loading');
-          loading.classList.add("block-loading");
-
-          $.ajaxSetup({
-              headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              }
-          });
-         var municipio = document.getElementById('municipio');                        
-         municipio.options.length = 0;
-         municipio.options[0] = new Option("-- Seleccione una opción --","0");
-          
-          $.ajax({
-           url: '/asociados-departamento/'+id,
-           type: 'GET',
-           dataType: 'json',             
-           success: function(res){
-           	  var data = res.data;
-              loading.classList.remove('block-loading');
-               var select = document.getElementById('departamento');                        
-               select.options.length = 0;
-
-                  if(data.length > 0){
-                      
-                      select.options[0] = new Option("-- Seleccione un departamento --","0");
-
-                      for(var i=0; i < data.length; i++){
-                        select.options[i + 1] = new Option(data[i].nombre,data[i].id);
-                      }
-
-                   }
-                   else
-                   {
-                        var select = document.getElementById('departamento');   
-                        select.options[0] = new Option("-- No hay departamentos --","0");
-                   }
-           },
-           error: function(e){
-              loading.classList.remove('block-loading');
-                  switch(e.status)
-                  {
-                    case 422:
-                      toastr.error(e.responseJSON.error,'');
-                    break;
-                    default:
-                      toastr.error('Error: ' + e.statusText,'');
-                    break;
-                  }
-           }
-        });
-    }
-
-    var obtener_municipios = function(id){
-    	loading = document.getElementById('loading');
-          loading.classList.add("block-loading");
-
-          $.ajaxSetup({
-              headers: {
-                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              }
-          });
-          
-          $.ajax({
-           url: '/asociados-municipio/'+id,
-           type: 'GET',
-           dataType: 'json',             
-           success: function(res){
-              var data = res.data;
-              loading.classList.remove('block-loading');
-               var select = document.getElementById('municipio');                        
-               select.options.length = 0;
-
-                if(data.length > 0){
-                      
-	                      select.options[0] = new Option("-- Seleccione un municipio --","0");
-
-	                      for(var i=0; i < data.length; i++){
-	                        select.options[i + 1] = new Option(data[i].nombre,data[i].id);
-	                      }
-
-	                   }
-	                   else
-	                   {
-	                        var select = document.getElementById('municipio');   
-	                        select.options[0] = new Option("-- No hay municipios --","0");
-	                   }
-	           },
-           error: function(e){
-              loading.classList.remove('block-loading');
-                  switch(e.status)
-                  {
-                    case 422:
-                      toastr.error(e.responseJSON.error,'');
-                    break;
-                    default:
-                      toastr.error('Error: ' + e.statusText,'');
-                    break;
-                  }
-           }
-        });
-    }
+</script>
 
 @endsection

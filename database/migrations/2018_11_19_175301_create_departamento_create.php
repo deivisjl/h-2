@@ -13,14 +13,14 @@ class CreateDepartamentoCreate extends Migration
      */
     public function up()
     {
-        Schema::create('departamento', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('nombre');
-            $table->integer('pais_id')->unsigned();
-            $table->foreign('pais_id')->references('id')->on('pais');
-            $table->timestamps();
-            $table->engine = 'InnoDB';
-        });
+        // Schema::create('departamento', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->string('nombre');
+        //     $table->integer('pais_id')->unsigned();
+        //     $table->foreign('pais_id')->references('id')->on('pais');
+        //     $table->timestamps();
+        //     $table->engine = 'InnoDB';
+        // });
     }
 
     /**

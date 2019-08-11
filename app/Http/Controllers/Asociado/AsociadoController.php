@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Asociado;
 
+use App\Rol;
 use App\Pais;
+use App\User;
 use App\Asociado;
 use App\Municipio;
 use App\Departamento;
 use App\TipoAsociado;
+use Faker\Factory as Faker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -14,6 +17,8 @@ use HepplerDotNet\FlashToastr\Flash;
 
 class AsociadoController extends Controller
 {
+
+    private $rolId;
     /**
      * Display a listing of the resource.
      *
@@ -45,38 +50,95 @@ class AsociadoController extends Controller
      */
     public function store(Request $request)
     {
-      
-        $rules = [
+
+          $rules = [
+                 'nombres' => 'required|string|max:100',
+                 'apellidos' => 'required|string|max:100',
+                 'email' => 'required|string|email|max:255|unique:users',
+                 'genero' => 'required|numeric|min:1|max:2',
+                 'telefono' => 'required|numeric|min:1',
+                 'direccion' => 'required|string|max:100',
+              ]; 
+
+
+           $rules_asociado = [
               'nombres' => 'required|string|max:100',
               'apellidos' => 'required|string|max:100',
               'dpi' => 'required|numeric|min:1|unique:asociado',
               'telefono' => 'required|numeric|min:1',
-              'correo_electronico' => 'required|email',
+              'email' => 'required|email',
               'tipo_asociado' => 'required|numeric|min:1',
-              'municipio' => 'required|numeric|min:1',
+              'pais' => 'required|numeric|min:1',
               'patrocinador' => 'nullable|numeric',
               'direccion' => 'required|string'
-            ];            
+            ]; 
 
-        $this->validate($request, $rules);
+          $this->validate($request, $rules);
 
-        $asociado = new Asociado();
-        $asociado->nombres = $request->get('nombres');
-        $asociado->apellidos = $request->get('apellidos');
-        $asociado->dpi = $request->get('dpi');
-        $asociado->telefono = $request->get('telefono');
-        $asociado->correo = $request->get('correo_electronico');
-        $asociado->tipo_asociado_id = $request->get('tipo_asociado');
-        $asociado->direccion = $request->get('direccion');
-        $asociado->municipio_id = $request->get('municipio');        
-        $asociado->save();
+          $this->validate($request, $rules_asociado);
 
-        $asociado->patrocinador_id = ($request->get('patrocinador') != 0) ? $request->get('patrocinador') : $asociado->id;
-        $asociado->save();
+       try 
+       {
 
-        Flash::success('','El registro se guardó con éxito');
+          $faker = Faker::create();
+          $passw = $faker->randomNumber($nbDigits = NULL, $strict = false);
 
-        return redirect('/asociados');
+          DB::beginTransaction();
+
+          $roles = Rol::all();
+
+          foreach ($roles as $rol){
+
+              if(strcmp (strtoupper($rol->nombre) , User::USUARIO_ASOCIADO ) == 0)
+              {
+                  $this->rolId = $rol->id;
+                  break;
+              }
+          }
+
+          $usuario = new User();
+          $usuario->nombres = $request->get('nombres');
+          $usuario->apellidos = $request->get('apellidos');
+          $usuario->sexo = $request->get('genero');
+          $usuario->direccion = $request->get('direccion');
+          $usuario->telefono = $request->get('telefono');
+          $usuario->email = $request->get('email');
+          $usuario->password = bcrypt($passw);
+          $usuario->token = User::generarVerificationToken();
+          $usuario->rol_id = $this->rolId;
+          $usuario->save();
+
+          $asociado = new Asociado();
+          $asociado->nombres = $request->get('nombres');
+          $asociado->apellidos = $request->get('apellidos');
+          $asociado->dpi = $request->get('dpi');
+          $asociado->telefono = $request->get('telefono');
+          $asociado->email = $request->get('email');
+          $asociado->tipo_asociado_id = $request->get('tipo_asociado');
+          $asociado->sexo = $request->get('genero');
+          $asociado->direccion = $request->get('direccion');
+          $asociado->pais_id = $request->get('pais'); 
+          $asociado->usuario_id = $usuario->id;       
+          $asociado->save();
+
+          $asociado->patrocinador_id = ($request->get('patrocinador') != 0) ? $request->get('patrocinador') : $asociado->id;
+          $asociado->save();
+
+          DB::commit();  
+
+          Flash::success('',$passw);
+
+          return redirect('/asociados');
+       }
+        catch (\Exception $e) 
+       {
+          DB::rollback();
+
+          Flash::error('',$e->getMessage());
+
+          return redirect('/asociados');
+       }
+                 
     }
 
     /**
@@ -87,7 +149,7 @@ class AsociadoController extends Controller
      */
     public function show(Request $request)
     {
-        $ordenadores = array("asociado.id","asociado.apellidos","asociado.nombres","asociado.dpi","asociado.direccion","asociado.telefono","asociado.correo","tipo_asociado.nombre");
+        $ordenadores = array("asociado.id","asociado.apellidos","asociado.nombres","asociado.dpi","asociado.direccion","asociado.telefono","asociado.email","tipo_asociado.nombre");
 
         $columna = $request['order'][0]["column"];
         
@@ -96,7 +158,7 @@ class AsociadoController extends Controller
 
         $asociados = DB::table('asociado') 
                 ->join('tipo_asociado','asociado.tipo_asociado_id','=','tipo_asociado.id')             
-                ->select('asociado.id','asociado.apellidos','asociado.nombres','asociado.dpi','asociado.direccion','asociado.telefono','asociado.correo','tipo_asociado.nombre as tipo') 
+                ->select('asociado.id','asociado.apellidos','asociado.nombres','asociado.dpi','asociado.direccion','asociado.telefono','asociado.email','tipo_asociado.nombre as tipo') 
                 ->whereNull('asociado.deleted_at')
                 ->where($ordenadores[$columna], 'LIKE', '%' . $criterio . '%')
                 ->orderBy($ordenadores[$columna], $request['order'][0]["dir"])
@@ -162,7 +224,7 @@ class AsociadoController extends Controller
         $asociado->apellidos = $request->get('apellidos');
         $asociado->dpi = $request->get('dpi');
         $asociado->telefono = $request->get('telefono');
-        $asociado->correo = $request->get('correo_electronico');
+        $asociado->email = $request->get('correo_electronico');
         $asociado->tipo_asociado_id = $request->get('tipo_asociado');
         $asociado->direccion = $request->get('direccion');
         $asociado->save();
@@ -182,13 +244,20 @@ class AsociadoController extends Controller
     {
         try 
         {
-            $asociado = Asociado::findOrFail($id);
-            $asociado->delete();
+            DB::beginTransaction();
+              $asociado = Asociado::findOrFail($id);
+              $asociado->delete();
 
-            return response()->json(['data' => 'El registro se eliminó con éxito'],200);
+              $user = User::findOrFail($asociado->usuario_id);
+              $user->delete();
+
+              DB::commit();
+              return response()->json(['data' => 'El registro se eliminó con éxito'],200);
+            
         } 
         catch (\Exception $e) 
-        {
+        {   
+            DB::rollback();
             return response()->json(['error' => $e->getMessage()],422);    
         }
     }
@@ -230,31 +299,34 @@ class AsociadoController extends Controller
         return response()->json($data, 200);
     }
 
-    public function departamento($id)
+    public function credencial($token)
     {
-        try 
-        {
-            $departamentos = Departamento::where('pais_id','=',$id)->orderBy('nombre','asc')->get();
-
-            return response()->json(['data' => $departamentos],200);
+        $usuario = User::where('token','=',$token)->first();
+        if($usuario)
+        {            
+            return view('auth.nueva-credencial',['usuario' => $usuario]);
         } 
-        catch (\Exception $e) 
+        else
         {
-            return response()->json(['error' => $e->getMessage()],422);
+            return redirect('/');
         }
     }
 
-    public function municipio($id)
+    public function renovar_credencial(Request $request)
     {
-        try 
-        {
-            $municipios = Municipio::where('departamento_id','=',$id)->orderBy('nombre','asc')->get();
-            
-            return response()->json(['data' => $municipios],200);
-        } 
-        catch (\Exception $e) 
-        {
-            return response()->json(['error' => $e->getMessage()],422);
-        }
+        
+        $rules = [
+              'usuario' => 'required|numeric|min:1',
+              'password' => 'required|string|min:5|confirmed'
+            ];            
+        $this->validate($request, $rules);
+        $usuario = User::findOrFail($request->get('usuario'));
+        $usuario->token = User::generarVerificationToken();
+        $usuario->password = bcrypt($request->get('password'));    
+        $usuario->save();
+        
+        Flash::success('','Su contraseña se ha cambiado con éxito');
+        return redirect('/login');
     }
+
 }

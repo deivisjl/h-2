@@ -12,8 +12,4 @@ class Pais extends Model
         'id','nombre'
     ];
 
-    public function departamento()
-    {
-    	return $this->hasMany('App\Departamento');
-    }
 }

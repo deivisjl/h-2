@@ -21,6 +21,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::name('recovery')->get('registro/credencial/{token}','Asociado\AsociadoController@credencial');
+
 //administrador
 Route::group(['middleware' => ['auth','admin']], function() {
 

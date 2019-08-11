@@ -1,29 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="content-header">
-   <h3>Países <small>Listado de países</small></h3>
-   <ol class="breadcrumb">
-      <a href="{{ route('paises.create') }}" class="btn btn-primary pull-right">Nuevo registro</a>
-   </ol>
-</section>
-<div class="panel panel-default">
-    <div class="panel-body">
-        <div class="row">
-            <div class="col-md-12">
-                <table id="listar" class="table table-striped table-bordered table-hover">
-                    <thead>
-                      <tr>
-                        <th style="width:15%; text-align: center">No.</th>
-                        <th>Nombre</th>   
-                        <th>Departamentos</th>                
-                        <th>Acción</th>
-                      </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-    </div>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+      <section class="content-header">
+         <h3>Países <small>Listado de países</small></h3>
+         <ol class="breadcrumb">
+            <a href="{{ route('paises.create') }}" class="btn btn-primary pull-right">Nuevo registro</a>
+         </ol>
+      </section>
+      <div class="panel panel-default">
+          <div class="panel-body">
+              
+            <table id="listar" class="table table-striped table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <th style="width:15%; text-align: center">No.</th>
+                    <th>Nombre</th>   
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+            </table>
+              
+          </div>
+      </div>
+  </div>
 </div>
 @endsection
 
@@ -46,7 +47,7 @@
           "columns":[
               {'data': 'id'},
               {'data': 'nombre'},   
-              {'defaultContent':'<a class="filtrar btn btn-success btn-xs"  data-toggle="tooltip" data-placement="top" title="Ver registros"><i class="glyphicon glyphicon-filter"></i> Departamentos</a>', "orderable":false},           
+                         
               {'defaultContent':'<a class="editar btn btn-info btn-xs"  data-toggle="tooltip" data-placement="top" title="Editar registro"><i class="glyphicon glyphicon-edit"></i> Editar</a> <a class="borrar btn btn-danger btn-xs"  data-toggle="tooltip" data-placement="top" title="Borrar registro"><i class="glyphicon glyphicon-trash"></i> Eliminar</a>', "orderable":false}
           ],
           "language": idioma_spanish,
@@ -75,18 +76,6 @@
          if(id > 0)
            {
               borrar_registro(id);
-           }
-
-      });
-
-      $(tbody).on("click","a.filtrar",function(){
-        var data = table.row($(this).parents("tr")).data();
-        
-        var id = data.id;
-
-         if(id > 0)
-           {
-              window.location.href ="/pais-departamento/"+id;
            }
 
       });

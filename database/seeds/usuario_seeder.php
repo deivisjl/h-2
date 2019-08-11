@@ -17,11 +17,11 @@ class usuario_seeder extends Seeder
 
         foreach ($roles as $rol){
             
-            if(strtoupper($rol->nombre) == User::USUARIO_ADMINISTRADOR)
+            if(strcmp (strtoupper($rol->nombre) , User::USUARIO_ADMINISTRADOR ))
             {
                 $this->rolId = $rol->id;
+                break;
             }
-            break;
         }
 
         User::create([

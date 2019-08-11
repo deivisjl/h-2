@@ -14,7 +14,7 @@ class Asociado extends Model
     protected $date = ['deleted_at'];
 
     protected $fillable = [
-        'id','sh','nombres','apellidos','dpi','direccion','telefono','correo','tipo_asociado_id','patrocinador_id','municipio_id'
+        'id','sh','nombres','apellidos','dpi','direccion','telefono','correo','tipo_asociado_id','patrocinador_id','pais_id','usuario_id'
     ];
 
 	public function tipo_asociado()
@@ -22,8 +22,8 @@ class Asociado extends Model
 		return $this->belongsTo('App\TipoAsociado');
 	}
 
-	public function municipio()
+	public function pais()
 	{
-		return $this->belongsTo('App\Municipio');
+		return $this->belongsTo('App\Pais');
 	}
 }

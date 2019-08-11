@@ -21,12 +21,14 @@ class CreateAsociadoTable extends Migration
             $table->bigInteger('dpi');
             $table->text('direccion');
             $table->bigInteger('telefono');
-            $table->string('correo');
+            $table->string('email');
+            $table->integer('sexo');
+            $table->integer('usuario_id')->unsigned();
             $table->integer('tipo_asociado_id')->unsigned();
             $table->integer('patrocinador_id')->unsigned()->nullable();
-            $table->integer('municipio_id')->unsigned();
-            $table->foreign('tipo_asociado_id')->references('id')->on('tipo_asociado');
-            $table->foreign('municipio_id')->references('id')->on('municipio');
+            $table->integer('pais_id')->unsigned();
+            $table->foreign('pais_id')->references('id')->on('pais');
+            $table->foreign('usuario_id')->references('id')->on('users');
             $table->softDeletes();
             $table->timestamps();
             $table->engine = 'InnoDB';

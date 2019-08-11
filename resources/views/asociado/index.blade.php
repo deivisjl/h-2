@@ -55,7 +55,7 @@
               {'data': 'dpi'},   
               {'data': 'direccion'},   
               {'data': 'telefono'},   
-              {'data': 'correo'},   
+              {'data': 'email'},   
               {'data': 'tipo'},  
               {'defaultContent':'<a class="editar btn btn-info btn-xs"  data-toggle="tooltip" data-placement="top" title="Editar registro"><i class="glyphicon glyphicon-edit"></i> Editar</a> <a class="borrar btn btn-danger btn-xs"  data-toggle="tooltip" data-placement="top" title="Borrar registro"><i class="glyphicon glyphicon-trash"></i> Eliminar</a>', "orderable":false}
           ],
