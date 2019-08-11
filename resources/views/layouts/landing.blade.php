@@ -104,5 +104,6 @@
     <script type="text/javascript" src="{{ asset('js/dataTables.bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/toastr.min.js') }}"></script>
     @yield('js')
+    @include('flash-toastr::message')
 </body>
 </html>

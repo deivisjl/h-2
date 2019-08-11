@@ -126,7 +126,7 @@ class AsociadoController extends Controller
 
           DB::commit();  
 
-          Flash::success('',$passw);
+          Flash::success('','Registro generado con éxito');
 
           return redirect('/asociados');
        }
@@ -318,14 +318,17 @@ class AsociadoController extends Controller
         $rules = [
               'usuario' => 'required|numeric|min:1',
               'password' => 'required|string|min:5|confirmed'
-            ];            
+            ];         
+
         $this->validate($request, $rules);
+
         $usuario = User::findOrFail($request->get('usuario'));
         $usuario->token = User::generarVerificationToken();
         $usuario->password = bcrypt($request->get('password'));    
         $usuario->save();
         
         Flash::success('','Su contraseña se ha cambiado con éxito');
+
         return redirect('/login');
     }
 

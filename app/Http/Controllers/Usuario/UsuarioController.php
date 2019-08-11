@@ -63,6 +63,7 @@ class UsuarioController extends Controller
         $usuario->direccion = $request->get('direccion');
         $usuario->telefono = $request->get('telefono');
         $usuario->email = $request->get('email');
+        $usuario->token = User::generarVerificationToken();
         $usuario->password = bcrypt($request->get('password'));
         $usuario->rol_id = $request->get('rol');
         $usuario->save();

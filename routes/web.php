@@ -21,7 +21,13 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::name('recovery')->get('registro/credencial/{token}','Asociado\AsociadoController@credencial');
+Route::group(['middleware' => ['guest']], function() {
+
+Route::name('credenciales')->get('registro/credencial/{token}','Asociado\AsociadoController@credencial');
+
+});
+
+Route::post('/cambiar-credencial','Asociado\AsociadoController@renovar_credencial');
 
 //administrador
 Route::group(['middleware' => ['auth','admin']], function() {
