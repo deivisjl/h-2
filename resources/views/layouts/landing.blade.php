@@ -51,7 +51,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         <!-- <li><a href="#">Inicio <span class="sr-only">(current)</span></a></li> -->
-                        <li><a href="/">Productos</a></li>
+                        
                     </ul>
 
                     <!-- Right Side Of Navbar -->
