@@ -134,9 +134,16 @@ class AsociadoController extends Controller
        {
           DB::rollback();
 
-          Flash::error('',$e->getMessage());
+          if($e instanceof \Swift_TransportException)
+          {
+              Flash::error('','Ocurrió un error al enviar el email');  
+          }
+          else{
+              Flash::error('',$this->removeslashes($e->getMessage()));   
+          }
+          
 
-          return redirect('/asociados');
+          return redirect()->back()->withInput($request->input());
        }
                  
     }
@@ -330,6 +337,12 @@ class AsociadoController extends Controller
         Flash::success('','Su contraseña se ha cambiado con éxito');
 
         return redirect('/login');
+    }
+
+    function removeslashes($string)
+    {
+        $string=implode("",explode("\n",$string));
+        return stripslashes(trim($string));
     }
 
 }
