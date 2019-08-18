@@ -64,7 +64,7 @@
 
                          @if(Auth::user()->esAdministrador())
                             <li><a href="{{ route('comisiones.index') }}">COMISIONES</a></li>
-                            <li><a href="#">REPORTES</a></li>
+                            <li><a href="/reportes">REPORTES</a></li>
                          @endif
                     </ul>
 

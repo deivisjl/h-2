@@ -62,6 +62,8 @@ Route::group(['middleware' => ['auth','admin']], function() {
 
     Route::resource('usuarios','Usuario\UsuarioController');
 
+    Route::get('reportes','Reporte\ReporteController@index');
+
 });
 
 //vendedor
