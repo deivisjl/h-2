@@ -73,7 +73,7 @@
 	              {'data': 'tipo'},             
 	              {'data': 'monto', "render":function ( data, type, row, meta ) {
                                 return '<span> Q. '+data+'</span>';
-                               }, "searchable":false
+                               }, "searchable":false, "orderable":false
 	           	  },
 	          ],
 	          "language": idioma_spanish,
