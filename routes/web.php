@@ -63,6 +63,7 @@ Route::group(['middleware' => ['auth','admin']], function() {
     Route::resource('usuarios','Usuario\UsuarioController');
 
     Route::get('reportes','Reporte\ReporteController@index');
+    Route::get('reportes-fecha/{request}','Reporte\ReporteController@fecha');
 
 });
 

@@ -118,6 +118,7 @@
     <script type="text/javascript" src="{{ asset('js/dataTables.bootstrap.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/toastr.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/application.js') }}"></script>
+    @yield('js-primary')
     @yield('js')
     @include('flash-toastr::message')
 </body>

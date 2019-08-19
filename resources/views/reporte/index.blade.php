@@ -41,7 +41,7 @@
   </div>
 </div>
 @endsection
-@section('js')
+@section('js-primary')
 <script>
   $(".btn-group > .btn").click(function(){
     
