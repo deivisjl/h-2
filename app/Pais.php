@@ -12,4 +12,8 @@ class Pais extends Model
         'id','nombre'
     ];
 
+    public function asociado()
+    {
+    	return $this->hasMany('App\Asociado');
+    }
 }

@@ -86,7 +86,7 @@
 						</tr>
 						<tr>
 							<td width="20%"><strong>DIRECCION:</strong></td>
-							<td width="80%"><span>{{ $pedido->asociado->municipio->departamento->pais->nombre }}</span></td>
+							<td width="80%"><span>{{ $pedido->asociado->pais->nombre }}</span></td>
 						</tr>
 						<tr>
 							<td width="20%"><strong>NIT.:</strong></td>
@@ -108,7 +108,7 @@
 						</tr>
 						<tr>
 							<td width="20%"><strong>DIRECCION:</strong></td>
-							<td width="80%"><span>{{ $pedido->asociado->direccion }}, {{ $pedido->asociado->municipio->nombre }}, {{ $pedido->asociado->municipio->departamento->nombre }}</span></td>
+							<td width="80%"><span>{{ $pedido->asociado->direccion }}</span></td>
 						</tr>
 						<tr>
 							<td width="20%"><strong>TELEFONO.:</strong></td>
