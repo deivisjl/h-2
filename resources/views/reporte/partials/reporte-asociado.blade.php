@@ -27,6 +27,7 @@
 				<div class="row">
 					<div class="col-md-12" style="text-align: justify;">
 						<span style="text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus culpa reprehenderit temporibus, ipsum facere suscipit numquam voluptatem earum cupiditate beatae a sunt aliquam minima ipsam nemo eius laboriosam, deleniti, rerum.</span>
+						<small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus, vel? Laboriosam debitis quam deleniti alias optio, natus consequatur, earum odit illo, aut aspernatur repellat ipsum harum maiores perspiciatis quos cum.</small>
 					</div>
 				</div>
 
