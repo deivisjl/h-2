@@ -64,6 +64,7 @@ Route::group(['middleware' => ['auth','admin']], function() {
 
     Route::get('reportes','Reporte\ReporteController@index');
     Route::get('reportes-fecha/{request}','Reporte\ReporteController@fecha');
+    Route::get('reportes-categoria/{request}','Reporte\ReporteController@categoria');
 
 });
 

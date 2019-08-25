@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Reporte;
 
 use App\Producto;
+use App\Categoria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -16,7 +17,9 @@ class ReporteController extends Controller
      */
     public function index()
     {
-        return view('reporte.index');
+        $categorias = Categoria::all();
+
+        return view('reporte.index',['categorias' => $categorias]);
     }
 
     /**
@@ -71,9 +74,51 @@ class ReporteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function categoria(Request $request)
     {
-        //
+        $ordenadores = array("categoria.id","categoria.nombres");
+
+        $columna = $request['order'][0]["column"];        
+        $categoria = $request['buscar'][0]["categoria"];
+        $fecha_desde = $request['buscar'][0]["fecha_desde"];
+        $fecha_hasta = $request['buscar'][0]["fecha_hasta"];
+        
+        $criterio = $request['search']['value'];
+
+        $categorias = DB::table('pedido')
+                    ->join('detalle_pedido','pedido.id','=','detalle_pedido.pedido_id')
+                    ->join('producto','detalle_pedido.producto_id','=','producto.id')
+                    ->join('categoria','producto.categoria_id','categoria.id')
+                    ->select('categoria.id','producto.id','categoria.nombre as categoria',DB::raw('SUM(detalle_pedido.importe) as monto'))
+                    ->where($ordenadores[$columna], 'LIKE', '%' . $criterio . '%')
+                    ->whereBetween('pedido.created_at', [$fecha_desde, $fecha_hasta." 23:59:59"])
+                    ->groupBy('categoria.id','producto.id','categoria.nombre')
+                    ->orderBy($ordenadores[$columna], $request['order'][0]["dir"])
+                    ->skip($request['start'])
+                    ->take($request['length'])
+                    ->get();
+
+        $count = DB::table('pedido')
+                    ->join('detalle_pedido','pedido.id','=','detalle_pedido.pedido_id')
+                    ->join('producto','detalle_pedido.producto_id','=','producto.id')
+                    ->join('categoria','producto.categoria_id','categoria.id')
+                    ->select('categoria.id','producto.id','categoria.nombre',DB::raw('SUM(detalle_pedido.importe) as monto'))
+                    ->where($ordenadores[$columna], 'LIKE', '%' . $criterio . '%')
+                    ->whereBetween('pedido.created_at', [$fecha_desde, $fecha_hasta." 23:59:59"])
+                    ->groupBy('categoria.id','producto.id','categoria.nombre')
+                    ->orderBy($ordenadores[$columna], $request['order'][0]["dir"])
+                    ->skip($request['start'])
+                    ->take($request['length'])
+                    ->count();
+               
+        $data = array(
+        'draw' => $request->draw,
+        'recordsTotal' => $count,
+        'recordsFiltered' => $count,
+        'data' => $categorias,
+        );
+
+        return response()->json($data, 200);
     }
 
     /**

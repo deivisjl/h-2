@@ -120,6 +120,7 @@
     <script type="text/javascript" src="{{ asset('js/application.js') }}"></script>
     @yield('js-primary')
     @yield('js')
+    @yield('js-secondary')
     @include('flash-toastr::message')
 </body>
 </html>
