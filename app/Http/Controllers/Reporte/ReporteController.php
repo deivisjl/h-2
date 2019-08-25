@@ -106,9 +106,6 @@ class ReporteController extends Controller
                     ->where($ordenadores[$columna], 'LIKE', '%' . $criterio . '%')
                     ->whereBetween('pedido.created_at', [$fecha_desde, $fecha_hasta." 23:59:59"])
                     ->groupBy('categoria.id','producto.id','categoria.nombre')
-                    ->orderBy($ordenadores[$columna], $request['order'][0]["dir"])
-                    ->skip($request['start'])
-                    ->take($request['length'])
                     ->count();
                
         $data = array(
@@ -127,42 +124,48 @@ class ReporteController extends Controller
      * @param  \App\Producto  $producto
      * @return \Illuminate\Http\Response
      */
-    public function show(Producto $producto)
+    public function pedido(Request $request)
     {
-        //
+         $ordenadores = array("asociado.id","asociado.nombres","tipo_asociado.nombre","pedido.id","pedido.total");
+
+        $columna = $request['order'][0]["column"];        
+        $asociado = $request['buscar'][0]["asociado"];
+        $fecha_desde = $request['buscar'][0]["fecha_desde"];
+        $fecha_hasta = $request['buscar'][0]["fecha_hasta"];
+        
+        $criterio = $request['search']['value'];
+
+        $count = DB::table('asociado')
+                    ->join('tipo_asociado','asociado.tipo_asociado_id','=','tipo_asociado.id')
+                    ->join('pedido','asociado.id','=','pedido.asociado_id')
+                    
+                    ->select('asociado.id',DB::raw('CONCAT(asociado.nombres," ",asociado.apellidos) as asociado'),'pedido.id as pedido','pedido.total','tipo_asociado.nombre as tipo',DB::raw('date_format(pedido.created_at,"%d-%m-%Y") as fecha'))
+                    ->where('asociado.id','=',$asociado)
+                    ->where($ordenadores[$columna], 'LIKE', '%' . $criterio . '%')
+                    ->whereBetween('pedido.created_at', [$fecha_desde, $fecha_hasta." 23:59:59"])
+                    ->count();
+
+        $asociado = DB::table('asociado')
+                    ->join('tipo_asociado','asociado.tipo_asociado_id','=','tipo_asociado.id')
+                    ->join('pedido','asociado.id','=','pedido.asociado_id')
+                    
+                    ->select('asociado.id',DB::raw('CONCAT(asociado.nombres," ",asociado.apellidos) as asociado'),'pedido.id as pedido','pedido.total','tipo_asociado.nombre as tipo',DB::raw('date_format(pedido.created_at,"%d-%m-%Y") as fecha'))
+                    ->where('asociado.id','=',$asociado)
+                    ->where($ordenadores[$columna], 'LIKE', '%' . $criterio . '%')
+                    ->whereBetween('pedido.created_at', [$fecha_desde, $fecha_hasta." 23:59:59"])
+                    ->orderBy($ordenadores[$columna], $request['order'][0]["dir"])
+                    ->skip($request['start'])
+                    ->take($request['length'])
+                    ->get();
+               
+        $data = array(
+        'draw' => $request->draw,
+        'recordsTotal' => $count,
+        'recordsFiltered' => $count,
+        'data' => $asociado,
+        );
+
+        return response()->json($data, 200);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Producto  $producto
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Producto $producto)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Producto  $producto
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Producto $producto)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Producto  $producto
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Producto $producto)
-    {
-        //
-    }
 }

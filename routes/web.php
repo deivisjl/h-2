@@ -65,6 +65,7 @@ Route::group(['middleware' => ['auth','admin']], function() {
     Route::get('reportes','Reporte\ReporteController@index');
     Route::get('reportes-fecha/{request}','Reporte\ReporteController@fecha');
     Route::get('reportes-categoria/{request}','Reporte\ReporteController@categoria');
+    Route::get('reportes-pedido/{request}','Reporte\ReporteController@pedido');
 
 });
 
@@ -102,4 +103,12 @@ Route::group(['middleware' => ['auth','digitador']], function() {
     Route::get('asociados-departamento/{id}','Asociado\AsociadoController@departamento');
     Route::get('asociados-municipio/{id}','Asociado\AsociadoController@municipio');
 
+});
+
+
+//asociado
+Route::group(['middleware' => ['auth','asociado']], function() {
+
+    Route::get('mis-comisiones/','Reporte\ReporteAsociadoController@index');
+    Route::get('reportes-asociado/{request}','Reporte\ReporteAsociadoController@reporte');
 });
