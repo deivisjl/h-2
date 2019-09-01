@@ -66,6 +66,4 @@ class ReporteAsociadoController extends Controller
 
         return response()->json($data, 200);
     }
-
-   
 }

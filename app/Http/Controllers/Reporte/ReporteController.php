@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Reporte;
 
 use App\Producto;
 use App\Categoria;
+use Carbon\Carbon;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -168,4 +170,28 @@ class ReporteController extends Controller
         return response()->json($data, 200);
     }
 
+    public function imprimir_fecha(Request $request)
+   {
+        try 
+        {
+
+        $reporte_fecha = DB::table('pedido')
+                    ->join('asociado','pedido.asociado_id','=','asociado.id')
+                    ->join('tipo_asociado','asociado.tipo_asociado_id','=','tipo_asociado.id')
+                    ->select('asociado.id',DB::raw('CONCAT(asociado.nombres," ",asociado.apellidos) as asociado'),DB::raw('SUM(pedido.total) as monto'),'tipo_asociado.nombre as tipo')
+                    ->whereBetween('pedido.created_at', [$request->get('desde'), $request->get('hasta')." 23:59:59"])
+                    ->groupBy('asociado.id','tipo_asociado.nombre')
+                    ->get();
+
+    $pdf = \PDF::loadView('reporte.imprimir.reporte-fecha-imprimir',['reporte_fecha' => $reporte_fecha,'desde'=> $request->get('desde'),'hasta'=>$request->get('hasta')]);
+
+             $pdf->setPaper('letter', 'portrait');
+            
+             return $pdf->download('reporte_fechas_'.Carbon::now()->format('dmY_h:m:s').'.pdf');
+        } 
+        catch (\Exception $e) 
+        {
+            return response()->json(['error',$e->getMessage()],422);
+        }
+   }
 }

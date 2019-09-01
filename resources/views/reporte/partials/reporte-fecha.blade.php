@@ -26,7 +26,7 @@
 <hr>
 <div class="row">
 	<div class="col-md-12 text-center">
-		<button class="btn btn-success btn-lg"><i class="glyphicon glyphicon-print"></i> Imprimir</button>
+		<button class="btn btn-success btn-lg" id="imprimir-fecha"><i class="glyphicon glyphicon-print"></i> Imprimir</button>
 	</div>
 </div>
 
@@ -52,6 +52,22 @@
 
 		}
 	})
+
+	$('#imprimir-fecha').on('click',function(e){
+		e.preventDefault();
+
+		var desde = $('#desde').val();
+		var hasta = $('#hasta').val();
+
+		if(!desde || !hasta)
+		{
+			toastr.error('El intervalo de fechas debe ser válido!!','Mensaje: ');
+		}
+		else
+		{
+			reporte_fecha_imprimir(desde,hasta);	
+		}
+	});
 
 	 var  listar = function(parameters){
   
@@ -82,5 +98,81 @@
 
 	    });
 	  }
+
+	  var reporte_fecha_imprimir = function(desde,hasta)
+      {
+        var loading = document.getElementById('loading');
+          
+            loading.classList.add("block-loading");
+
+            var datos = {desde:desde,hasta:hasta};
+
+            $.ajax({
+                type:'GET',
+                url:'/reportes-fecha-imprimir/show',
+                data:datos,                    
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success:function(response,status,xhr)
+                {
+                    var filename = "";                   
+                  var disposition = xhr.getResponseHeader('Content-Disposition');
+
+                   if (disposition) {
+                      var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                      var matches = filenameRegex.exec(disposition);
+                      if (matches !== null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+                  } 
+                  var linkelem = document.createElement('a');
+                  try {
+                        var blob = new Blob([response], { type: 'application/octet-stream' });                        
+
+                      if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                          //   IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+                          window.navigator.msSaveBlob(blob, filename);
+                      } else {
+                          var URL = window.URL || window.webkitURL;
+                          var downloadUrl = URL.createObjectURL(blob);
+
+                          if (filename) { 
+                              // use HTML5 a[download] attribute to specify filename
+                              var a = document.createElement("a");
+
+                              // safari doesn't support this yet
+                              if (typeof a.download === 'undefined') {
+                                  window.location = downloadUrl;
+                              } else {
+
+                                  a.href = downloadUrl;
+                                  a.download = filename;
+                                  document.body.appendChild(a);
+                                  a.target = "_blank";
+                                  a.click();
+                              }
+                          } else {
+                              
+                              window.location = downloadUrl;
+                          }
+
+                          setTimeout(function () {
+                                URL.revokeObjectURL(downloadUrl);
+                            }, 100); // Cleanup
+                      }   
+
+                  } catch (ex) {
+                      console.log(ex);
+                  }
+
+                  loading.classList.remove('block-loading');                  
+                },
+                error: function(e)
+                {
+                    loading.classList.remove('block-loading'); 
+                    
+                    toastr.error('Error: ' + e.statusText,'');
+                }
+              });
+      }
 </script>
 @endsection
