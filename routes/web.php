@@ -69,6 +69,7 @@ Route::group(['middleware' => ['auth','admin']], function() {
 
     Route::get('reportes-fecha-imprimir/{request}','Reporte\ReporteController@imprimir_fecha');
     Route::get('reportes-categoria-imprimir/{request}','Reporte\ReporteController@imprimir_categoria');
+    Route::get('reportes-asociado-imprimir/{request}','Reporte\ReporteController@imprimir_asociado');
 
 });
 

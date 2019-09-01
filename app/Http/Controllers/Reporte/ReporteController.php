@@ -78,7 +78,7 @@ class ReporteController extends Controller
      */
     public function categoria(Request $request)
     {
-        $ordenadores = array("categoria.id","categoria.nombres");
+        $ordenadores = array("categoria.id","producto.nombre","categoria.nombres");
 
         $columna = $request['order'][0]["column"];        
         $categoria = $request['buscar'][0]["categoria"];
@@ -91,10 +91,11 @@ class ReporteController extends Controller
                     ->join('detalle_pedido','pedido.id','=','detalle_pedido.pedido_id')
                     ->join('producto','detalle_pedido.producto_id','=','producto.id')
                     ->join('categoria','producto.categoria_id','categoria.id')
-                    ->select('categoria.id','producto.id','categoria.nombre as categoria',DB::raw('SUM(detalle_pedido.importe) as monto'))
+                    ->select('categoria.id','producto.id','producto.nombre  as producto','categoria.nombre as categoria',DB::raw('SUM(detalle_pedido.importe) as monto'))
+                    ->where('categoria.id','=',$categoria)
                     ->where($ordenadores[$columna], 'LIKE', '%' . $criterio . '%')
                     ->whereBetween('pedido.created_at', [$fecha_desde, $fecha_hasta." 23:59:59"])
-                    ->groupBy('categoria.id','producto.id','categoria.nombre')
+                    ->groupBy('categoria.id','producto.id','producto.nombre','categoria.nombre')
                     ->orderBy($ordenadores[$columna], $request['order'][0]["dir"])
                     ->skip($request['start'])
                     ->take($request['length'])
@@ -104,10 +105,11 @@ class ReporteController extends Controller
                     ->join('detalle_pedido','pedido.id','=','detalle_pedido.pedido_id')
                     ->join('producto','detalle_pedido.producto_id','=','producto.id')
                     ->join('categoria','producto.categoria_id','categoria.id')
-                    ->select('categoria.id','producto.id','categoria.nombre',DB::raw('SUM(detalle_pedido.importe) as monto'))
+                    ->select('categoria.id','producto.id','producto.nombre','categoria.nombre',DB::raw('SUM(detalle_pedido.importe) as monto'))
+                    ->where('categoria.id','=',$categoria)
                     ->where($ordenadores[$columna], 'LIKE', '%' . $criterio . '%')
                     ->whereBetween('pedido.created_at', [$fecha_desde, $fecha_hasta." 23:59:59"])
-                    ->groupBy('categoria.id','producto.id','categoria.nombre')
+                    ->groupBy('categoria.id','producto.id','producto.nombre','categoria.nombre')
                     ->count();
                
         $data = array(
@@ -188,6 +190,60 @@ class ReporteController extends Controller
              $pdf->setPaper('letter', 'portrait');
             
              return $pdf->download('reporte_fechas_'.Carbon::now()->format('dmY_h:m:s').'.pdf');
+        } 
+        catch (\Exception $e) 
+        {
+            return response()->json(['error',$e->getMessage()],422);
+        }
+   }
+
+   public function imprimir_categoria(Request $request)
+   {
+        try 
+        {
+
+       $reporte_categoria = DB::table('pedido')
+                    ->join('detalle_pedido','pedido.id','=','detalle_pedido.pedido_id')
+                    ->join('producto','detalle_pedido.producto_id','=','producto.id')
+                    ->join('categoria','producto.categoria_id','categoria.id')
+                    ->select('categoria.id','producto.id','producto.nombre as producto','categoria.nombre as categoria',DB::raw('SUM(detalle_pedido.importe) as monto'))
+                    ->where('categoria.id','=',$request->get('categoria'))
+                    ->whereBetween('pedido.created_at', [$request->get('desde'), $request->get('hasta')." 23:59:59"])
+                    ->groupBy('categoria.id','producto.id','producto.nombre','categoria.nombre')
+                    ->get();
+
+    $pdf = \PDF::loadView('reporte.imprimir.reporte-categoria-imprimir',['reporte_categoria' => $reporte_categoria,'desde'=> $request->get('desde'),'hasta'=>$request->get('hasta')]);
+
+             $pdf->setPaper('letter', 'portrait');
+            
+             return $pdf->download('reporte_categorias_'.Carbon::now()->format('dmY_h:m:s').'.pdf');
+        } 
+        catch (\Exception $e) 
+        {
+            return response()->json(['error',$e->getMessage()],422);
+        }
+   }
+
+   public function imprimir_asociado(Request $request)
+   {
+        try 
+        {
+
+            $asociado = DB::table('asociado')
+                    ->join('tipo_asociado','asociado.tipo_asociado_id','=','tipo_asociado.id')
+                    ->join('pedido','asociado.id','=','pedido.asociado_id')
+                    
+                    ->select('asociado.id',DB::raw('CONCAT(asociado.nombres," ",asociado.apellidos) as asociado'),'pedido.id as pedido','pedido.total','tipo_asociado.nombre as tipo',DB::raw('date_format(pedido.created_at,"%d-%m-%Y") as fecha'))
+                    ->where('asociado.id','=',$request->get('asociado'))
+                    ->whereBetween('pedido.created_at', [$request->get('desde'), $request->get('hasta')." 23:59:59"])
+                    ->get();
+
+        $pdf = \PDF::loadView('reporte.imprimir.reporte-asociado-imprimir',
+                    ['asociado' => $asociado,'desde'=> $request->get('desde'),'hasta'=>$request->get('hasta')]);
+
+             $pdf->setPaper('letter', 'portrait');
+            
+             return $pdf->download('reporte_asociado_'.Carbon::now()->format('dmY_h:m:s').'.pdf');
         } 
         catch (\Exception $e) 
         {
