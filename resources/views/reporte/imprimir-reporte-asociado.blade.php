@@ -23,7 +23,7 @@
 		</div>
 	</div>
 	<div class="row text-center">
-		<div class="col-md-12"><h4>Reporte de pedidos del
+		<div class="col-md-12"><h4>Comisiones del
 			<span>{{ $desde = \Carbon\Carbon::parse($desde)->format('d-m-Y') }}</span> al 
 			<span>{{ $hasta = \Carbon\Carbon::parse($hasta)->format('d-m-Y') }}</span></h4></div>
 	</div>
@@ -33,21 +33,19 @@
 				<thead>
 					<tr>
 						<th>#</th>
-						<th>Asocidado</th>
-						<th>Tipo asociado</th>
+						<th>Titular del pedido</th>			
 						<th>No. pedido</th>
-						<th>Total</th>
+						<th>Comisión</th>
 						<th>Fecha</th>
 					</tr>
 				</thead>
 				<tbody>
-					@foreach($asociado as $index => $item)
+					@foreach($comisiones as $index => $item)
 					<tr>
 						<td>{{ $index + 1}}</td>
 						<td>{{ $item->asociado }}</td>
-						<td>{{ $item->tipo }}</td>
 						<td>{{ $item->pedido }}</td>
-						<td>Q. {{ $item->total }}</td>
+						<td>Q. {{ $item->monto }}</td>
 						<td>{{ $item->fecha }}</td>
 					</tr>
 					@endforeach
@@ -55,7 +53,5 @@
 			</table>
 		</div>
 	</div>
-	
-	
 </body>
 </html>

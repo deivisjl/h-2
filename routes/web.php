@@ -115,4 +115,5 @@ Route::group(['middleware' => ['auth','asociado']], function() {
 
     Route::get('mis-comisiones/','Reporte\ReporteAsociadoController@index');
     Route::get('reportes-asociado/{request}','Reporte\ReporteAsociadoController@reporte');
+    Route::get('imprimir-asociado/{request}','Reporte\ReporteAsociadoController@imprimir');
 });
