@@ -46,6 +46,10 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         <!-- <li><a href="#">Link</a></li> -->
+                        @if(Auth::user()->esAsociado())
+                            <li><a href="/mis-comisiones">MIS COMISIONES</a></li>
+                        @endif
+
                         @if(Auth::user()->esAdministrador() || Auth::user()->esDigitador())
                         <li class="dropdown">
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">ADMINISTRAR <span class="caret"></span></a>
@@ -89,7 +93,7 @@
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            CERRAR SESIÓN
+                                            Cerrar sesión
                                         </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -120,6 +124,8 @@
     <script type="text/javascript" src="{{ asset('js/application.js') }}"></script>
     @yield('js-primary')
     @yield('js')
+    @yield('js-secondary')
+    @yield('js-tercero')
     @include('flash-toastr::message')
 </body>
 </html>

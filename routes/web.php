@@ -64,6 +64,12 @@ Route::group(['middleware' => ['auth','admin']], function() {
 
     Route::get('reportes','Reporte\ReporteController@index');
     Route::get('reportes-fecha/{request}','Reporte\ReporteController@fecha');
+    Route::get('reportes-categoria/{request}','Reporte\ReporteController@categoria');
+    Route::get('reportes-pedido/{request}','Reporte\ReporteController@pedido');
+
+    Route::get('reportes-fecha-imprimir/{request}','Reporte\ReporteController@imprimir_fecha');
+    Route::get('reportes-categoria-imprimir/{request}','Reporte\ReporteController@imprimir_categoria');
+    Route::get('reportes-asociado-imprimir/{request}','Reporte\ReporteController@imprimir_asociado');
 
 });
 
@@ -101,4 +107,13 @@ Route::group(['middleware' => ['auth','digitador']], function() {
     Route::get('asociados-departamento/{id}','Asociado\AsociadoController@departamento');
     Route::get('asociados-municipio/{id}','Asociado\AsociadoController@municipio');
 
+});
+
+
+//asociado
+Route::group(['middleware' => ['auth','asociado']], function() {
+
+    Route::get('mis-comisiones/','Reporte\ReporteAsociadoController@index');
+    Route::get('reportes-asociado/{request}','Reporte\ReporteAsociadoController@reporte');
+    Route::get('imprimir-asociado/{request}','Reporte\ReporteAsociadoController@imprimir');
 });
