@@ -108,23 +108,23 @@ class ComisionController extends Controller
 
                 $comision = DB::table('comision')
                             ->join('asociado','comision.asociado_id','=','asociado.id')
-                            ->select('comision.asociado_id',DB::raw('SUM(comision.monto) as monto'),DB::raw('CONCAT_WS(" ",asociado.nombres," ",asociado.apellidos) as nombre'))
+                            ->select('asociado.id',DB::raw('SUM(comision.monto) as monto'),DB::raw('CONCAT_WS(" ",asociado.nombres," ",asociado.apellidos) as nombre'))
                             ->where('comision.estado','=',1)
                             ->where('asociado.id','=',$id)
-                            ->groupBy('comision.asociado_id','asociado.nombres','asociado.apellidos')
+                            ->groupBy('asociado.id','asociado.nombres','asociado.apellidos')
                             ->first();
-
-                foreach ($comisiones as $key => $comision) 
-                    {
-                        $comision->estado = 0;
-                        $comision->save();    
-                    }
 
                 $fecha = Carbon::now()->format('d-m-Y');
 
                  $pdf = PDF::loadView('comision.imprimir',['comision' => $comision,'fecha' => $fecha]);
 
                  $pdf->setPaper('half-letter', 'landscape');
+
+                 foreach ($comisiones as $key => $comision) 
+                    {
+                        $comision->estado = 0;
+                        $comision->save();    
+                    }
 
                  DB::commit();
                 

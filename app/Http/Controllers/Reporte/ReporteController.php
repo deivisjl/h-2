@@ -182,7 +182,7 @@ class ReporteController extends Controller
                     ->join('tipo_asociado','asociado.tipo_asociado_id','=','tipo_asociado.id')
                     ->select('asociado.id',DB::raw('CONCAT(asociado.nombres," ",asociado.apellidos) as asociado'),DB::raw('SUM(pedido.total) as monto'),'tipo_asociado.nombre as tipo')
                     ->whereBetween('pedido.created_at', [$request->get('desde'), $request->get('hasta')." 23:59:59"])
-                    ->groupBy('asociado.id','tipo_asociado.nombre')
+                    ->groupBy('asociado.id','asociado.nombres','asociado.apellidos','tipo_asociado.nombre')
                     ->get();
 
     $pdf = \PDF::loadView('reporte.imprimir.reporte-fecha-imprimir',['reporte_fecha' => $reporte_fecha,'desde'=> $request->get('desde'),'hasta'=>$request->get('hasta')]);
