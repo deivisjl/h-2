@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">	
 <head>
-	<meta charset="UTF-8">
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>Document</title>
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap.min.css') }}">
 	<style type="text/css">
@@ -47,6 +48,9 @@
 				    background-color: #69a938 !important;
 				    color: #fff !important;
 				}
+			.body {
+			    font-family: DejaVu Sans;
+			}
 	</style></style>
 </head>
 <body>

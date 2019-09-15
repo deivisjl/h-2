@@ -14,6 +14,10 @@
 			    background-color: #7ac143;
 			    border-color: #7ac143;
 			}
+
+			.body {
+			    font-family: DejaVu Sans;
+			}
 	</style></style>
 </head>
 <body>
