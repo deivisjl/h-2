@@ -56,13 +56,13 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
-                        <li class="dropdown">
+                        <!-- <li class="dropdown">
                           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nosotros <span class="caret"></span></a>
                           <ul class="dropdown-menu">
                             <li><a href="#">Visión</a></li>                            
                             <li><a href="#">Misión</a></li>
                           </ul>
-                        </li>
+                        </li> -->
                         <!-- Authentication Links -->
                         @if (Auth::guest())
                             <li><a href="{{ route('login') }}">Iniciar sesión</a></li>
