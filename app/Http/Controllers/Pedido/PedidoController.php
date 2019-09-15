@@ -183,8 +183,6 @@ class PedidoController extends Controller
 
              $detalle = DetallePedido::where('pedido_id','=',$pedido->id)->get();
 
-             return response()->json(['data' => $detalle]);
-
              $pdf = \PDF::loadView('pedido.imprimir',['pedido' => $pedido,'detalle' => $detalle]);
 
              $pdf->setPaper('letter', 'portrait');

@@ -30,7 +30,7 @@ class UsuarioController extends Controller
      */
     public function create()
     {
-        $roles = Rol::all();
+        $roles = Rol::where('administra','=',1)->get();
 
         return view('admin.usuario.create',['roles' => $roles]);   
     }

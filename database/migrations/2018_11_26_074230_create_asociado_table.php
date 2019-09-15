@@ -29,6 +29,7 @@ class CreateAsociadoTable extends Migration
             $table->integer('pais_id')->unsigned();
             $table->foreign('pais_id')->references('id')->on('pais');
             $table->foreign('usuario_id')->references('id')->on('users');
+            $table->foreign('tipo_asociado_id')->references('id')->on('tipo_asociado');
             $table->softDeletes();
             $table->timestamps();
             $table->engine = 'InnoDB';
