@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Categoria extends Model
 {
-	use Sluggable;
-	use SluggableScopeHelpers;
+	// use Sluggable;
+	// use SluggableScopeHelpers;
 
     protected $table = 'categoria';
 
