@@ -185,9 +185,9 @@ class PedidoController extends Controller
 
              $pdf = \PDF::loadView('pedido.imprimir',['pedido' => $pedido,'detalle' => $detalle]);
 
-             return response()->json(['data' => $pedido]);
-
              $pdf->setPaper('letter', 'portrait');
+
+             return response()->json(['data' => $pedido]);
             
              return $pdf->download('factura_'.Carbon::now()->format('dmY_h:m:s').'.pdf');
         } 
