@@ -183,7 +183,7 @@ class PedidoController extends Controller
 
              $detalle = DetallePedido::where('pedido_id','=',$pedido->id)->get();
 
-             return response()->json(['data' => $detalle]);
+             return response()->json(['data' => $pedido]);
 
              $pdf = \PDF::loadView('pedido.imprimir',['pedido' => $pedido,'detalle' => $detalle]);
 
