@@ -3,8 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Cviebrock\EloquentSluggable\Sluggable;
-use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+// use Cviebrock\EloquentSluggable\Sluggable;
+// use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 
 class Categoria extends Model
 {
@@ -17,14 +17,14 @@ class Categoria extends Model
         'id','nombre','slug'
     ];
 
-   public function sluggable(){
+ //   public function sluggable(){
     	
-		return [
-			'slug' => [
-				'source' => 'nombre'
-			]
-		];
-	}
+	// 	return [
+	// 		'slug' => [
+	// 			'source' => 'nombre'
+	// 		]
+	// 	];
+	// }
 
 	public function producto()
 	{
