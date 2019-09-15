@@ -14,15 +14,6 @@
 			<div class="panel-body">
 				 <div class="row">
 				 	<div class="col-md-12">
-				 		<ol class="breadcrumb">
-						  <li><a href="{{ route('usuarios.index') }}">Usuarios</a></li>
-						  <li class="active">Editar registro</li>
-						</ol>				 		
-				 	</div>
-				 	<div class="col-md-12 text-center"><h4>Editar usuario</h4></div>
-				 </div>
-				 <div class="row">
-				 	<div class="col-md-12">
 				 		<form method="POST" id="form_registro" action="{{ url('usuarios', [$usuario->id]) }}" autocomplete="off">
 	                    <input name="_method" type="hidden" value="PUT">
 				 		{{ csrf_field() }}
